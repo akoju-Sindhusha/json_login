@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <style>
+        body{
+            display: flex;
+            height: 90vh;
+            align-items: center;
+            background-color: black;
+        }
+        .container{
+            width: 35vw;
+            height: 74vh;
+            border: 1px solid rgba(255, 255, 255, 0);
+            margin-left: 32%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            background-image: linear-gradient(to bottom, rgb(139, 244, 139),green,rgb(4, 56, 4));
+        }
+        h2{
+            font-size: 3rem;
+            margin-left: 3%;
+            margin-bottom: 3%;
+        }
+        label{
+            font-size: 1.5rem;
+        }
+        input{
+            padding: 15px;
+            width: 22vw;
+        }
+        button{
+            width: 10vw;
+            padding: 2%;
+            font-size: medium;
+            border-radius: 10px;
+            background-color: black;
+            color: green;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h2>Signup Form</h2>
+    <form id="signupForm">
+        <label for="username"></label><br>
+        <input type="text" id="_username" name="username" placeholder="Enter your name" required><br>
+        
+        <label for="email"></label><br>
+        <input type="email" id="_email" name="email" placeholder="Enter your email" required><br>
+        
+        <label for="password"></label><br>
+        <input type="password" id="_password" name="password" placeholder="Enter password" required><br><br><br>
+        
+        <button type="submit" onclick="handleSignup()">Sign Up</button>
+        <button type="button" onclick="fun()">Login</button>
+    </form>
+    </div>
+
+    <script>
+        //async function handleSignup(){
+        signupForm=document.getElementById('signupForm')
+        signupForm.addEventListener('submit',async(event)=>{
+            event.preventDefault();
+       
+            const username = document.getElementById('_username');
+            const email = document.getElementById('_email');
+            const password = document.getElementById('_password');
+
+            const signupData = {
+                username: username.value,
+                email: email.value,
+                password: password.value
+            };
+            console.log(signupData);
+
+            const response = await fetch('http://localhost:3000/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(signupData)
+            });
+            let data = await response.json();
+            console.log(data);
+        })
+
+        async function fun(){
+            let username = document.getElementById('_username').value;
+            let email = document.getElementById('_email').value;
+            let password = document.getElementById('_password').value;
+
+            let response = await fetch(`http://localhost:3000/posts?username=${username}&email=${email}&password=${password}`);
+            let data = await response.json();
+            console.log(data.length);
+            if(data.length > 0){
+                window.open("login.html");
+            } else {
+                alert("Please Sign up first");
+            }
+        }
+    </script>
+</body>
+</html>
